@@ -4,21 +4,16 @@ import { NewTodoForm } from "./NewTodoForm";
 import { TodoList } from "./TodoList";
 
 export default function App() {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(() => {
+    const localValue = localStorage.getItem("todos")
+    if(localValue == null) return []
 
-  useEffect(() => {
-    // Retrieve todos from local storage on component mount
-    const storedTodos = localStorage.getItem("todos");
-    if (storedTodos) {
-      setTodos(JSON.parse(storedTodos));
-    }
-  }, []);
+    return JSON.parse(localValue)
+  });
 
   useEffect(() => {
     // Update local storage whenever todos change
-    if (todos.length > 0) {
-      localStorage.setItem("todos", JSON.stringify(todos));
-    }
+    localStorage.setItem("todos", JSON.stringify(todos));
   }, [todos]); 
 
 
